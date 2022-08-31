@@ -6,9 +6,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-// const productRouter = require('./routes/productRouter');
-// const checkoutRouter = require('./routes/checkoutRouter');
-// const apiRouter = require('./routes/apiRouter');
+const userRouter = require('./routes/userRouter');
+const issueRouter = require('./routes/issueRouter');
 
 const app = express();
 
@@ -32,9 +31,8 @@ app.use(
   })
 );
 
-// app.use('/products', productRouter);
-// app.use('/checkout', checkoutRouter);
-// app.use('/api', apiRouter);
+app.use('/users', userRouter);
+app.use('/issues', issueRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));
