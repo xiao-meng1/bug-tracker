@@ -6,3 +6,27 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id             Int     @id @default(autoincrement())
+  username       String  @unique
+  password       String
+  firstName      String
+  lastName       String
+  iconColorHex   String
+  reportedIssues Issue[] @relation("Reported")
+  assignedIsuees Issue[]
+}
+
+model Issue {
+  id           Int       @id @default(autoincrement())
+  summary      String
+  description  String
+  type         String
+  status       String
+  reportedBy   User      @relation("Reported", fields: [reportedById], references: [id])
+  reportedById Int
+  assignedTo   User[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime?
+}
