@@ -1,3 +1,65 @@
-exports.test = (req, res, next) => {
-  res.json();
+const { PrismaClient, Prisma } = require('@prisma/client');
+const { body, validationResult } = require('express-validator');
+
+const prisma = new PrismaClient();
+
+exports.getUsers = async (req, res, next) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
+};
+
+exports.createUser = [
+  body('username').trim().isLength({ min: 1 }).escape().isAlphanumeric(),
+  body('password').trim().isLength({ min: 1 }).escape(),
+  body('firstName').trim().isLength({ min: 1 }).escape().isAlpha(),
+  body('lastName').trim().isLength({ min: 1 }).escape().isAlpha(),
+  body('iconColorHex').trim().isLength({ min: 1 }).isHexColor(),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .json({ errors: errors.array({ onlyFirstError: true }) });
+    }
+
+    const { username, password, firstName, lastName, iconColorHex } = req.body;
+
+    try {
+      const user = await prisma.user.create({
+        data: {
+          username,
+          password,
+          firstName,
+          lastName,
+          iconColorHex,
+        },
+      });
+      res.json(user);
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          return res.status(400).json({
+            errors: [
+              {
+                username: 'Username already exists.',
+              },
+            ],
+          });
+        }
+      }
+      next(e);
+    }
+  },
+];
+
+exports.getUserById = async (req, res, next) => {
+  const { id } = req.params;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+  res.json(user);
 };

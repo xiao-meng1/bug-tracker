@@ -11,15 +11,6 @@ const issueRouter = require('./routes/issueRouter');
 
 const app = express();
 
-// mongoose.connect(`${process.env.MONGODB_URI}/store_data_test`, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-// const db = mongoose.connection;
-// db.on('error', () => {
-//   console.error('MongoDB connection error:');
-// });
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

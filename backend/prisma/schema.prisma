@@ -19,14 +19,14 @@ model User {
 }
 
 model Issue {
-  id           Int       @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   summary      String
   description  String
   type         String
   status       String
-  reportedBy   User      @relation("Reported", fields: [reportedById], references: [id])
+  reportedBy   User     @relation("Reported", fields: [reportedById], references: [id])
   reportedById Int
   assignedTo   User[]
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

@@ -1,3 +1,148 @@
-exports.test = (req, res, next) => {
-  res.json();
+const { PrismaClient } = require('@prisma/client');
+const { body, validationResult } = require('express-validator');
+
+const prisma = new PrismaClient();
+
+exports.getIssues = async (req, res, next) => {
+  const issues = await prisma.issue.findMany();
+  res.json(issues);
+};
+
+exports.createIssue = [
+  body('summary').trim().isLength({ min: 1 }).escape(),
+  body('description').trim().isLength({ min: 1 }).escape(),
+  body('type').trim().isLength({ min: 1 }).escape(),
+  body('status').trim().isLength({ min: 1 }).escape(),
+  body('reportedBy').trim().isLength({ min: 1 }).escape(),
+  body('assignedTo').optional().isArray(),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .json({ errors: errors.array({ onlyFirstError: true }) });
+    }
+
+    const { summary, description, type, status, reportedBy, assignedTo } =
+      req.body;
+
+    try {
+      const assignedToValue = assignedTo
+        ? {
+            connect: assignedTo.map((id) => ({
+              id: Number(id),
+            })),
+          }
+        : {};
+
+      const issue = await prisma.issue.create({
+        data: {
+          summary,
+          description,
+          type,
+          status,
+          reportedBy: {
+            connect: {
+              id: Number(reportedBy),
+            },
+          },
+          assignedTo: assignedToValue,
+        },
+      });
+      res.json(issue);
+    } catch (e) {
+      next(e);
+    }
+  },
+];
+
+exports.getIssueById = async (req, res, next) => {
+  const { id } = req.params;
+
+  const issue = await prisma.issue.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+  res.json(issue);
+};
+
+exports.updateIssueById = [
+  body('summary').optional().trim().isLength({ min: 1 }).escape(),
+  body('description').optional().trim().isLength({ min: 1 }).escape(),
+  body('type').optional().trim().isLength({ min: 1 }).escape(),
+  body('status').optional().trim().isLength({ min: 1 }).escape(),
+  body('reportedBy').optional().trim().isLength({ min: 1 }).escape(),
+  body('assignedTo').optional().isArray(),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .json({ errors: errors.array({ onlyFirstError: true }) });
+    }
+
+    const { summary, description, type, status, reportedBy, assignedTo } =
+      req.body;
+    const { id } = req.params;
+
+    try {
+      const assignedToValue = assignedTo
+        ? {
+            set: [],
+            connect: assignedTo.map((id) => ({
+              id: Number(id),
+            })),
+          }
+        : {};
+      const data = {};
+      console.log(assignedToValue);
+
+      if (summary !== undefined) {
+        data.summary = summary;
+      }
+      if (description !== undefined) {
+        data.description = description;
+      }
+      if (type !== undefined) {
+        data.type = type;
+      }
+      if (status !== undefined) {
+        data.status = status;
+      }
+      if (reportedBy !== undefined) {
+        data.reportedBy = {
+          connect: {
+            id: Number(reportedBy),
+          },
+        };
+      }
+      if (assignedTo !== undefined) {
+        data.assignedTo = assignedToValue;
+      }
+
+      const issue = await prisma.issue.update({
+        where: {
+          id: Number(id),
+        },
+        data: data,
+      });
+      res.json(issue);
+    } catch (e) {
+      next(e);
+    }
+  },
+];
+
+exports.deleteIssueById = async (req, res, next) => {
+  const { id } = req.params;
+
+  const issue = await prisma.issue.delete({
+    where: {
+      id: Number(id),
+    },
+  });
+  res.json(issue);
 };
