@@ -5,9 +5,13 @@ const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const passport = require('passport');
+
+require('./config/passport');
 
 const userRouter = require('./routes/userRouter');
 const issueRouter = require('./routes/issueRouter');
+const authRouter = require('./routes/authRouter');
 
 const app = express();
 
@@ -22,8 +26,13 @@ app.use(
   })
 );
 
-app.use('/users', userRouter);
-app.use('/issues', issueRouter);
+app.use('/auth', authRouter);
+app.use('/users', passport.authenticate('jwt', { session: false }), userRouter);
+app.use(
+  '/issues',
+  passport.authenticate('jwt', { session: false }),
+  issueRouter
+);
 
 app.use(function (req, res, next) {
   next(createError(404));
