@@ -11,7 +11,7 @@ require('./config/passport');
 
 const userRouter = require('./routes/userRouter');
 const issueRouter = require('./routes/issueRouter');
-const authRouter = require('./routes/authRouter');
+const sessionRouter = require('./routes/sessionRouter');
 
 const app = express();
 
@@ -26,8 +26,8 @@ app.use(
   })
 );
 
-app.use('/auth', authRouter);
-app.use('/users', passport.authenticate('jwt', { session: false }), userRouter);
+app.use('/session', sessionRouter);
+app.use('/users', userRouter);
 app.use(
   '/issues',
   passport.authenticate('jwt', { session: false }),
