@@ -5,10 +5,10 @@ const passport = require('passport');
 
 exports.login = function (req, res, next) {
   passport.authenticate('login', { session: false }, (err, user, info) => {
-    if (err || !user) {
-      const error = new Error('An error occurred.');
-
-      return next(error);
+    if (err) return next(err);
+    console.log(info);
+    if (!user) {
+      return res.status(400).json(info);
     }
 
     try {

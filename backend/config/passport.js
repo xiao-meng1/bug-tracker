@@ -4,6 +4,7 @@ const passport = require('passport');
 const passportLocal = require('passport-local');
 const passportJWT = require('passport-jwt');
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcrypt');
 
 const localStrategy = passportLocal.Strategy;
 const JWTStrategy = passportJWT.Strategy;
@@ -36,14 +37,24 @@ passport.use(
 
         if (!user) {
           return cb(null, false, {
-            message: 'User not found.',
+            errors: [
+              {
+                username: 'User not found',
+              },
+            ],
           });
         }
 
-        const validate = password === user.password;
+        const match = await bcrypt.compare(password, user.password);
 
-        if (!validate) {
-          return cb(null, false, { message: 'Wrong Password' });
+        if (!match) {
+          return cb(null, false, {
+            errors: [
+              {
+                password: 'Wrong password.',
+              },
+            ],
+          });
         }
 
         return cb(null, user, { message: 'Logged in Successfully' });
