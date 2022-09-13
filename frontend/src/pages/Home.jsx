@@ -6,7 +6,7 @@ import Dashboard from '../components/Dashboard';
 
 // Check if cookie if cookie in state, if yes then render Dashboard, if no then render login.
 export default function Home() {
-  const userInState = true;
+  const userInState = false;
 
   return userInState ? <Dashboard /> : <Login />;
 }
