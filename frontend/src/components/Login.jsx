@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import jiraLogo from '../assets/images/mark-gradient-white-jira-software.svg';
 import styles from '../styles/login.module.css';
 
 export default function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <>
       <header className={styles.header}>
@@ -15,8 +18,24 @@ export default function Login() {
         <h2 className={styles.subheader}>Log in to your account</h2>
         <section className={styles.container}>
           <form action="">
-            <input type="text" placeholder="Enter Username" required />
-            <input type="password" placeholder="Enter Password" required />
+            <input
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              type="text"
+              placeholder="Enter Username"
+              required
+            />
+            <input
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              type="password"
+              placeholder="Enter Password"
+              required
+            />
             <button type="submit">Continue</button>
           </form>
           <p>OR</p>
