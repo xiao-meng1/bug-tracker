@@ -8,17 +8,8 @@ const bcrypt = require('bcrypt');
 
 const localStrategy = passportLocal.Strategy;
 const JWTStrategy = passportJWT.Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const prisma = new PrismaClient();
-
-const cookieExtractor = function (req) {
-  let token = null;
-
-  if (req && req.cookies) {
-    token = req.cookies['jwt'];
-  }
-
-  return token;
-};
 
 passport.use(
   'login',
@@ -68,7 +59,7 @@ passport.use(
 passport.use(
   new JWTStrategy(
     {
-      jwtFromRequest: cookieExtractor,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken,
       secretOrKey: process.env.JWT_SECRET,
     },
     async (token, cb) => {
