@@ -9,7 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   return (
-    <>
+    <div className={styles.app}>
       <header className={styles.header}>
         <img src={jiraLogo} alt="logo" />
         <h1>Bug Tracker</h1>
@@ -47,6 +47,6 @@ export default function Login() {
           Sign up for an account
         </Link>
       </main>
-    </>
+    </div>
   );
 }

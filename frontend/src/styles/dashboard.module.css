@@ -1,0 +1,151 @@
+.app {
+  position: relative;
+  height: 100%;
+  background-color: white;
+}
+
+.navbar {
+  position: absolute;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--dark-blue);
+  color: white;
+}
+
+.navbar .top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px 0;
+}
+
+.navbar .top img.jira_logo {
+  height: 40px;
+}
+
+.navbar .left_icon_container {
+  width: 70px;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar button {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.navbar button:hover {
+  background-color: var(--blue);
+}
+
+.navbar button p {
+  display: none;
+  padding-right: 30px;
+  height: 100%;
+}
+
+.navbar:hover button p {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.navbar .top button img {
+  height: 32px;
+}
+
+.navbar .bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px 0;
+}
+
+.navbar .user_icon {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.user_icon {
+  background-color: purple;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  width: 100%;
+  padding: 10px 20px 10px 90px;
+}
+
+.content header {
+  margin-bottom: 10px;
+}
+
+.content header p {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.content .filters {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.content .filters .icon_container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 40px;
+}
+
+.content .filters .user_icon {
+  height: 26px;
+  width: 26px;
+  border-radius: 13px;
+  font-size: 12px;
+}
+
+.content .filters button {
+  padding: 2px 6px;
+  border: solid lightgray 2px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.content .filters button:hover {
+  background-color: lightgray;
+}
+
+.content .column_container {
+  display: flex;
+}
+
+.content .column_container .column {
+  width: 25%;
+  margin-right: 14px;
+  padding: 14px 10px;
+  border-radius: 4px;
+  background-color: whitesmoke;
+  font-size: 12px;
+}
+
+.content .column_container .column h3 {
+  margin-bottom: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

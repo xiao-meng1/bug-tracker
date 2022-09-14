@@ -10,7 +10,7 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
-    <>
+    <div className={styles.app}>
       <header className={styles.header}>
         <img src={jiraLogo} alt="logo" />
         <h1>Bug Tracker</h1>
@@ -57,6 +57,6 @@ export default function SignUp() {
           Log into your account
         </Link>
       </main>
-    </>
+    </div>
   );
 }
