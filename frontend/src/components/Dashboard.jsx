@@ -1,5 +1,6 @@
 import React from 'react';
 
+import IssueCard from './IssueCard';
 import jiraLogo from '../assets/images/mark-gradient-white-jira-software.svg';
 import addIcon from '../assets/images/add_white_24dp.svg';
 import logoutIcon from '../assets/images/logout_white_24dp.svg';
@@ -49,9 +50,36 @@ export default function Dashboard() {
           <section className={styles.column_container}>
             <div className={styles.column}>
               <h3>TO DO 5</h3>
+              <IssueCard
+                summary="Summary asdfads asd ad fasd asdfddsfasdfasdfdasasdf"
+                type="bug"
+                assignees={[
+                  { initials: 'XM', iconColor: '#45a85f' },
+                  { initials: 'JW', iconColor: '#45a85f' },
+                  { initials: 'WP', iconColor: '#45a85f' },
+                ]}
+              />
+              <IssueCard
+                summary="Summary asdfads asd ad fasd asdfddsfasdfasdfdasasdf"
+                type="story"
+                assignees={[
+                  { initials: 'XM', iconColor: '#45a85f' },
+                  { initials: 'JW', iconColor: '#45a85f' },
+                  { initials: 'WP', iconColor: '#45a85f' },
+                ]}
+              />
             </div>
             <div className={styles.column}>
               <h3>IN PROGRESS 3</h3>
+              <IssueCard
+                summary="Summary asdfads asd ad fasd asdfddsfasdfasdfdasasdf"
+                type="task"
+                assignees={[
+                  { initials: 'XM', iconColor: '#45a85f' },
+                  { initials: 'JW', iconColor: '#45a85f' },
+                  { initials: 'WP', iconColor: '#45a85f' },
+                ]}
+              />
             </div>
             <div className={styles.column}>
               <h3>IN REVIEW 1</h3>

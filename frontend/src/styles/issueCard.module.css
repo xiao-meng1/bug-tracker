@@ -1,0 +1,35 @@
+.card {
+  padding: 10px 6px;
+  margin-bottom: 8px;
+  border-radius: 2px;
+  box-shadow: lightgray 1px 4px 4px;
+  background-color: white;
+}
+
+.card .summary {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.card .bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card .bottom .user_icon_container {
+  display: flex;
+  gap: 2px;
+  margin-left: 20px;
+}
+
+.card .bottom .user_icon {
+  height: 22px;
+  width: 22px;
+  border-radius: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  color: white;
+}

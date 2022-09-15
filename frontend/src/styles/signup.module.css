@@ -1,5 +1,5 @@
 .app {
-  height: 100%;
+  min-height: 100vh;
   background-color: var(--dark-blue);
 }
 
@@ -62,6 +62,10 @@
   color: white;
   height: 34px;
   border-radius: 2px;
+}
+
+.container form button:hover {
+  background-color: var(--dark-blue);
 }
 
 .signup {
