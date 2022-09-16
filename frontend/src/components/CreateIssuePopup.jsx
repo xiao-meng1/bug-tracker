@@ -4,38 +4,37 @@ import Story16Icon from '@atlaskit/icon-object/glyph/story/16';
 import Bug16Icon from '@atlaskit/icon-object/glyph/bug/16';
 import Task16Icon from '@atlaskit/icon-object/glyph/task/16';
 import clearIcon from '../assets/images/clear_black_24dp.svg';
-import deleteIcon from '../assets/images/delete_black_24dp.svg';
-import styles from '../styles/updateIssuePopup.module.css';
+import styles from '../styles/createIssuePopup.module.css';
 
-export default function UpdateIssuePopup() {
-  const [summary, setSummary] = useState('Sample Summary');
-  const [description, setDescription] = useState('Lorum ipsum description');
+export default function CreateIssuePopup() {
+  const [summary, setSummary] = useState('');
+  const [description, setDescription] = useState('');
   const [status, setStatus] = useState('Done');
   const [assignees, setAssignees] = useState([]);
-  const [type, setType] = useState('task');
+  const [type, setType] = useState('story');
 
   const renderType = () => {
     switch (type) {
       case 'story':
         return (
-          <>
+          <div className={styles.left}>
             <Story16Icon label="story icon" />
             STORY
-          </>
+          </div>
         );
       case 'task':
         return (
-          <>
+          <div className={styles.left}>
             <Task16Icon label="task icon" />
             TASK
-          </>
+          </div>
         );
       case 'bug':
         return (
-          <>
+          <div className={styles.left}>
             <Bug16Icon label="bug icon" />
             BUG
-          </>
+          </div>
         );
       default:
         return <div />;
@@ -47,11 +46,8 @@ export default function UpdateIssuePopup() {
       <button className={styles.overlay} type="button" aria-label="overlay" />
       <div className={styles.popup}>
         <div className={styles.header}>
-          <div className={styles.left}>{renderType()}</div>
+          {renderType()}
           <div className={styles.right}>
-            <button type="button">
-              <img src={deleteIcon} alt="delete" />
-            </button>
             <button type="button">
               <img src={clearIcon} alt="delete" />
             </button>
@@ -144,7 +140,7 @@ export default function UpdateIssuePopup() {
             </div>
           </div>
           <div className={styles.footer}>
-            <button type="submit">Update Issue</button>
+            <button type="submit">Create Issue</button>
           </div>
         </form>
       </div>
