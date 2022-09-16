@@ -1,0 +1,95 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  opacity: 0.3;
+}
+
+.popup {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 50px 0;
+  padding: 30px;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.popup .header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.popup .header .left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.popup .header .right button {
+  margin-left: 20px;
+}
+
+.popup .body {
+  display: flex;
+  gap: 30px;
+}
+
+.popup .body .summary {
+  font-size: 20px;
+  margin-bottom: 20px;
+  border: solid white 2px;
+}
+
+.popup .body .description {
+  font-size: 14px;
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 3px;
+  border: solid white 2px;
+}
+
+.popup .body .summary:focus,
+.popup .body .description:focus {
+  border: solid lightgray 2px;
+}
+
+.popup .body .right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.popup .body .label {
+  font-size: 12px;
+}
+
+.popup .body .field {
+  margin-top: 4px;
+  min-width: 100%;
+}
+
+.popup .footer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.popup .footer button {
+  background-color: var(--dark-blue);
+  color: white;
+  height: 34px;
+  padding: 0 20px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.popup .footer button:hover {
+  background-color: var(--blue);
+}

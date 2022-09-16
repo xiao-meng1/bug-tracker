@@ -23,13 +23,14 @@ function IssueCard(props) {
   };
 
   return (
-    <div className={styles.card}>
+    <button type="button" className={styles.card}>
       <p className={styles.summary}>{summary}</p>
       <div className={styles.bottom}>
         {renderTypeIcon()}
         <div className={styles.user_icon_container}>
           {assignees.map((user) => (
             <div
+              key={user.id}
               className={styles.user_icon}
               style={{ backgroundColor: user.iconColor }}
             >
@@ -38,7 +39,7 @@ function IssueCard(props) {
           ))}
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -53,6 +54,7 @@ IssueCard.propTypes = {
   type: PropTypes.string,
   assignees: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.number,
       initials: PropTypes.string,
       iconColor: PropTypes.string,
     })

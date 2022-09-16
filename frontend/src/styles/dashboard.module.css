@@ -1,11 +1,20 @@
 .app {
   position: relative;
-  min-height: 100vh;
+  min-height: 90vh;
   background-color: white;
+}
+
+.wrapper {
+  position: sticky;
+  display: inline;
+  top: 0;
+  height: 100vh;
 }
 
 .navbar {
   position: absolute;
+  top: 0;
+  width: fit-content;
   height: 100vh;
   display: flex;
   flex-direction: column;

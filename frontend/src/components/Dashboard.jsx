@@ -1,5 +1,6 @@
 import React from 'react';
 
+import UpdateIssuePopup from './UpdateIssuePopup';
 import IssueCard from './IssueCard';
 import jiraLogo from '../assets/images/mark-gradient-white-jira-software.svg';
 import addIcon from '../assets/images/add_white_24dp.svg';
@@ -9,30 +10,32 @@ import styles from '../styles/dashboard.module.css';
 export default function Dashboard() {
   return (
     <div className={styles.app}>
-      <nav className={styles.navbar}>
-        <div className={styles.top}>
-          <div className={styles.left_icon_container}>
-            <img className={styles.jira_logo} src={jiraLogo} alt="logo" />
-          </div>
-          <button type="button">
+      <div className={styles.wrapper}>
+        <nav className={styles.navbar}>
+          <div className={styles.top}>
             <div className={styles.left_icon_container}>
-              <img src={addIcon} alt="add icon" />
+              <img className={styles.jira_logo} src={jiraLogo} alt="logo" />
             </div>
-            <p>CREATE ISSUE</p>
-          </button>
-        </div>
-        <div className={styles.bottom}>
-          <div className={styles.left_icon_container}>
-            <div className={styles.user_icon}>XM</div>
+            <button type="button">
+              <div className={styles.left_icon_container}>
+                <img src={addIcon} alt="add icon" />
+              </div>
+              <p>CREATE ISSUE</p>
+            </button>
           </div>
-          <button type="button">
+          <div className={styles.bottom}>
             <div className={styles.left_icon_container}>
-              <img src={logoutIcon} alt="logout icon" />
+              <div className={styles.user_icon}>XM</div>
             </div>
-            <p>LOG OUT</p>
-          </button>
-        </div>
-      </nav>
+            <button type="button">
+              <div className={styles.left_icon_container}>
+                <img src={logoutIcon} alt="logout icon" />
+              </div>
+              <p>LOG OUT</p>
+            </button>
+          </div>
+        </nav>
+      </div>
       <section className={styles.content}>
         <header>
           <p>Projects / Example Project</p>
@@ -54,18 +57,18 @@ export default function Dashboard() {
                 summary="Summary asdfads asd ad fasd asdfddsfasdfasdfdasasdf"
                 type="bug"
                 assignees={[
-                  { initials: 'XM', iconColor: '#45a85f' },
-                  { initials: 'JW', iconColor: '#45a85f' },
-                  { initials: 'WP', iconColor: '#45a85f' },
+                  { id: 1, initials: 'XM', iconColor: '#45a85f' },
+                  { id: 2, initials: 'JW', iconColor: '#45a85f' },
+                  { id: 3, initials: 'WP', iconColor: '#45a85f' },
                 ]}
               />
               <IssueCard
                 summary="Summary asdfads asd ad fasd asdfddsfasdfasdfdasasdf"
                 type="story"
                 assignees={[
-                  { initials: 'XM', iconColor: '#45a85f' },
-                  { initials: 'JW', iconColor: '#45a85f' },
-                  { initials: 'WP', iconColor: '#45a85f' },
+                  { id: 1, initials: 'XM', iconColor: '#45a85f' },
+                  { id: 2, initials: 'JW', iconColor: '#45a85f' },
+                  { id: 3, initials: 'WP', iconColor: '#45a85f' },
                 ]}
               />
             </div>
@@ -75,9 +78,9 @@ export default function Dashboard() {
                 summary="Summary asdfads asd ad fasd asdfddsfasdfasdfdasasdf"
                 type="task"
                 assignees={[
-                  { initials: 'XM', iconColor: '#45a85f' },
-                  { initials: 'JW', iconColor: '#45a85f' },
-                  { initials: 'WP', iconColor: '#45a85f' },
+                  { id: 1, initials: 'XM', iconColor: '#45a85f' },
+                  { id: 2, initials: 'JW', iconColor: '#45a85f' },
+                  { id: 3, initials: 'WP', iconColor: '#45a85f' },
                 ]}
               />
             </div>
@@ -90,6 +93,7 @@ export default function Dashboard() {
           </section>
         </main>
       </section>
+      <UpdateIssuePopup />
     </div>
   );
 }
