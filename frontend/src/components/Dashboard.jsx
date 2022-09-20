@@ -1,14 +1,18 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 // import UpdateIssuePopup from './UpdateIssuePopup';
 // import CreateIssuePopup from './CreateIssuePopup';
 import IssueCard from './IssueCard';
+import { logoutUser } from '../redux/slices/userSlice';
 import jiraLogo from '../assets/images/mark-gradient-white-jira-software.svg';
 import addIcon from '../assets/images/add_white_24dp.svg';
 import logoutIcon from '../assets/images/logout_white_24dp.svg';
 import styles from '../styles/dashboard.module.css';
 
 export default function Dashboard() {
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.app}>
       <div className={styles.wrapper}>
@@ -28,7 +32,12 @@ export default function Dashboard() {
             <div className={styles.left_icon_container}>
               <div className={styles.user_icon}>XM</div>
             </div>
-            <button type="button">
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(logoutUser());
+              }}
+            >
               <div className={styles.left_icon_container}>
                 <img src={logoutIcon} alt="logout icon" />
               </div>

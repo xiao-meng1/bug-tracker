@@ -11,7 +11,14 @@ export const userSlice = createSlice({
     errors: [],
     isIdle: true,
   },
-  reducers: {},
+  reducers: {
+    logoutUser: (state) => {
+      state.isLoggedIn = false;
+      state.jwt = '';
+      state.info = {};
+      state.errors = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserFromLogin.pending, (state) => {
@@ -29,10 +36,13 @@ export const userSlice = createSlice({
         state.isLoggedIn = true;
         state.jwt = token;
         state.info = user;
+        state.errors = [];
         state.isIdle = true;
       });
   },
 });
+
+export const { logoutUser } = userSlice.actions;
 
 export const selectUserIsLoggedIn = (state) => state.user.isLoggedIn;
 export const selectUserJwt = (state) => state.user.jwt;
