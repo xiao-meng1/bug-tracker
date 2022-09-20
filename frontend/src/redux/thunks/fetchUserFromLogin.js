@@ -5,7 +5,7 @@ export default createAsyncThunk(
   'users/fetchUserFromLogin',
   async (loginInfo, { rejectWithValue }) => {
     const { username, password } = loginInfo;
-    const uri = `${process.env.REACT_APP_BACKEND_ORIGIN}/session/login`;
+    const uri = `${process.env.REACT_APP_BACKEND_ORIGIN}/sessions/login`;
 
     try {
       const response = await axios.post(uri, {

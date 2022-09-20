@@ -21,7 +21,11 @@ exports.createIssue = [
     if (!errors.isEmpty()) {
       return res
         .status(400)
-        .json({ errors: errors.array({ onlyFirstError: true }) });
+        .json({
+          errors: errors
+            .array({ onlyFirstError: true })
+            .map((obj) => ({ [obj.param]: obj.msg })),
+        });
     }
 
     const { summary, description, type, status, reportedBy, assignedTo } =

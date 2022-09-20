@@ -26,7 +26,7 @@ app.use(
   })
 );
 
-app.use('/session', sessionRouter);
+app.use('/sessions', sessionRouter);
 app.use('/users', userRouter);
 app.use(
   '/issues',

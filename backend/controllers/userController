@@ -21,7 +21,11 @@ exports.createUser = [
     if (!errors.isEmpty()) {
       return res
         .status(400)
-        .json({ errors: errors.array({ onlyFirstError: true }) });
+        .json({
+          errors: errors
+            .array({ onlyFirstError: true })
+            .map((obj) => ({ [obj.param]: obj.msg })),
+        });
     }
 
     const { username, password, firstName, lastName } = req.body;

@@ -18,6 +18,13 @@ export default function Login() {
     dispatch(fetchUserFromLogin({ username, password }));
   };
 
+  const handleGuestLoginSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      fetchUserFromLogin({ username: 'GuestUser1', password: 'GuestUser1' })
+    );
+  };
+
   return (
     <div className={styles.app}>
       <header className={styles.header}>
@@ -67,7 +74,11 @@ export default function Login() {
             <button type="submit">Continue</button>
           </form>
           <p className={styles.or}>OR</p>
-          <button type="button" className={styles.guest_login}>
+          <button
+            type="button"
+            className={styles.guest_login}
+            onClick={handleGuestLoginSubmit}
+          >
             Log in as a guest
           </button>
         </section>
