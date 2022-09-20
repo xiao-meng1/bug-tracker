@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UpdateIssuePopup from './UpdateIssuePopup';
+// import UpdateIssuePopup from './UpdateIssuePopup';
 // import CreateIssuePopup from './CreateIssuePopup';
 import IssueCard from './IssueCard';
 import jiraLogo from '../assets/images/mark-gradient-white-jira-software.svg';
@@ -94,7 +94,7 @@ export default function Dashboard() {
           </section>
         </main>
       </section>
-      <UpdateIssuePopup />
+      {/* <UpdateIssuePopup /> */}
       {/* <CreateIssuePopup /> */}
     </div>
   );

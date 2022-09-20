@@ -17,10 +17,15 @@ exports.login = function (req, res, next) {
           return next(err);
         }
 
-        const body = { id: user.id, username: user.username };
-        const token = jwt.sign({ user: body }, process.env.JWT_SECRET);
+        const filteredUser = Object.keys(user)
+          .filter((key) => key !== 'password')
+          .reduce((obj, key) => {
+            obj[key] = user[key];
+            return obj;
+          }, {});
+        const token = jwt.sign({ user: filteredUser }, process.env.JWT_SECRET);
 
-        return res.json({ token });
+        return res.json({ token, user: filteredUser });
       });
     } catch (error) {
       return next(error);

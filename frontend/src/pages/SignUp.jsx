@@ -8,6 +8,8 @@ export default function SignUp() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   return (
     <div className={styles.app}>
@@ -48,6 +50,24 @@ export default function SignUp() {
               placeholder="Confirm Password"
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               title="Must match the password field"
+              required
+            />
+            <input
+              value={firstName}
+              onChange={(e) => {
+                setFirstName(e.target.value);
+              }}
+              type="text"
+              placeholder="Enter First Name"
+              required
+            />
+            <input
+              value={lastName}
+              onChange={(e) => {
+                setLastName(e.target.value);
+              }}
+              type="text"
+              placeholder="Enter LastName"
               required
             />
             <button type="submit">Create account</button>

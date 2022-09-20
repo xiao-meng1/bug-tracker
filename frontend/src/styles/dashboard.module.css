@@ -14,7 +14,7 @@
 .navbar {
   position: absolute;
   top: 0;
-  width: fit-content;
+  width: max-content;
   height: 100vh;
   display: flex;
   flex-direction: column;

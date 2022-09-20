@@ -1,11 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import Login from '../components/Login';
 import Dashboard from '../components/Dashboard';
+import { selectUserIsLoggedIn } from '../redux/slices/userSlice';
 
-// Check if cookie if cookie in state, if yes then render Dashboard, if no then render login.
 export default function Home() {
-  const userInState = true;
+  const useIsLoggedIn = useSelector(selectUserIsLoggedIn);
 
-  return userInState ? <Dashboard /> : <Login />;
+  return useIsLoggedIn ? <Dashboard /> : <Login />;
 }
