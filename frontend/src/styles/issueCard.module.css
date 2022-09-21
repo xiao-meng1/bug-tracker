@@ -27,6 +27,7 @@
   display: flex;
   gap: 2px;
   margin-left: 20px;
+  height: 22px;
 }
 
 .card .bottom .user_icon {

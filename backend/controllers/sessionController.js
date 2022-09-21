@@ -23,7 +23,7 @@ exports.login = function (req, res, next) {
             obj[key] = user[key];
             return obj;
           }, {});
-        const token = jwt.sign({ user: filteredUser }, process.env.JWT_SECRET);
+        const token = jwt.sign({ user: user }, process.env.JWT_SECRET);
 
         return res.json({ token, user: filteredUser });
       });

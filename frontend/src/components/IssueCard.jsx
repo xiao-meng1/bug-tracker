@@ -11,11 +11,11 @@ function IssueCard(props) {
 
   const renderTypeIcon = () => {
     switch (type) {
-      case 'story':
+      case 'Story':
         return <Story16Icon label="story icon" />;
-      case 'task':
+      case 'Task':
         return <Task16Icon label="task icon" />;
-      case 'bug':
+      case 'Bug':
         return <Bug16Icon label="bug icon" />;
       default:
         return <div />;

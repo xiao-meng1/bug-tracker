@@ -16,21 +16,21 @@ export default function UpdateIssuePopup() {
 
   const renderType = () => {
     switch (type) {
-      case 'story':
+      case 'Story':
         return (
           <>
             <Story16Icon label="story icon" />
             STORY
           </>
         );
-      case 'task':
+      case 'Task':
         return (
           <>
             <Task16Icon label="task icon" />
             TASK
           </>
         );
-      case 'bug':
+      case 'Bug':
         return (
           <>
             <Bug16Icon label="bug icon" />
@@ -93,9 +93,9 @@ export default function UpdateIssuePopup() {
                   }}
                   required
                 >
-                  <option value="story">Story</option>
-                  <option value="bug">Bug</option>
-                  <option value="task">Task</option>
+                  <option value="Story">Story</option>
+                  <option value="Bug">Bug</option>
+                  <option value="Task">Task</option>
                 </select>
               </label>
               <label className={styles.label} htmlFor="status">

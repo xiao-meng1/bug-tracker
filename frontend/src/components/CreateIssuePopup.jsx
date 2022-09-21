@@ -11,25 +11,25 @@ export default function CreateIssuePopup() {
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('Done');
   const [assignees, setAssignees] = useState([]);
-  const [type, setType] = useState('story');
+  const [type, setType] = useState('Story');
 
   const renderType = () => {
     switch (type) {
-      case 'story':
+      case 'Story':
         return (
           <div className={styles.left}>
             <Story16Icon label="story icon" />
             STORY
           </div>
         );
-      case 'task':
+      case 'Task':
         return (
           <div className={styles.left}>
             <Task16Icon label="task icon" />
             TASK
           </div>
         );
-      case 'bug':
+      case 'Bug':
         return (
           <div className={styles.left}>
             <Bug16Icon label="bug icon" />
@@ -89,9 +89,9 @@ export default function CreateIssuePopup() {
                   }}
                   required
                 >
-                  <option value="story">Story</option>
-                  <option value="bug">Bug</option>
-                  <option value="task">Task</option>
+                  <option value="Story">Story</option>
+                  <option value="Bug">Bug</option>
+                  <option value="Task">Task</option>
                 </select>
               </label>
               <label className={styles.label} htmlFor="status">
