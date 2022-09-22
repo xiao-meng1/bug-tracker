@@ -41,6 +41,7 @@
 }
 
 .popup .body .summary {
+  width: 100%;
   font-size: 20px;
   margin-bottom: 20px;
   border: solid white 2px;

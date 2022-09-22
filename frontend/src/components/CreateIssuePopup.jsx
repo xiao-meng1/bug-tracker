@@ -1,17 +1,51 @@
 import React, { useState } from 'react';
-
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 import Story16Icon from '@atlaskit/icon-object/glyph/story/16';
 import Bug16Icon from '@atlaskit/icon-object/glyph/bug/16';
 import Task16Icon from '@atlaskit/icon-object/glyph/task/16';
 import clearIcon from '../assets/images/clear_black_24dp.svg';
+
+import { selectUserInfo, selectUserJwt } from '../redux/slices/userSlice';
+import { selectUsers } from '../redux/slices/usersSlice';
+import fetchIssues from '../redux/thunks/fetchIssues';
+import fetchUsers from '../redux/thunks/fetchUsers';
 import styles from '../styles/createIssuePopup.module.css';
 
-export default function CreateIssuePopup() {
+export default function CreateIssuePopup(props) {
+  const { unmountPopup } = props;
   const [summary, setSummary] = useState('');
   const [description, setDescription] = useState('');
-  const [status, setStatus] = useState('Done');
-  const [assignees, setAssignees] = useState([]);
   const [type, setType] = useState('Story');
+  const [status, setStatus] = useState('To Do');
+  const [assignedTo, setAssignedTo] = useState([]);
+  const userJwt = useSelector(selectUserJwt);
+  const userInfo = useSelector(selectUserInfo);
+  const users = useSelector(selectUsers);
+  const dispatch = useDispatch();
+
+  const handleCreateIssueClick = async (e) => {
+    e.preventDefault();
+
+    const uri = `${process.env.REACT_APP_BACKEND_ORIGIN}/issues`;
+    const data = {
+      summary,
+      description,
+      type,
+      status,
+      assignedTo,
+      reportedBy: userInfo.id,
+    };
+    const config = {
+      headers: { Authorization: `Bearer ${userJwt}` },
+    };
+
+    await axios.post(uri, data, config);
+    dispatch(fetchUsers(userJwt));
+    dispatch(fetchIssues(userJwt));
+    unmountPopup();
+  };
 
   const renderType = () => {
     switch (type) {
@@ -43,17 +77,22 @@ export default function CreateIssuePopup() {
 
   return (
     <>
-      <button className={styles.overlay} type="button" aria-label="overlay" />
+      <button
+        className={styles.overlay}
+        type="button"
+        aria-label="overlay"
+        onClick={unmountPopup}
+      />
       <div className={styles.popup}>
         <div className={styles.header}>
           {renderType()}
           <div className={styles.right}>
-            <button type="button">
-              <img src={clearIcon} alt="delete" />
+            <button type="button" onClick={unmountPopup}>
+              <img src={clearIcon} alt="close" />
             </button>
           </div>
         </div>
-        <form>
+        <form action="" onSubmit={handleCreateIssueClick}>
           <div className={styles.body}>
             <div className={styles.left}>
               <input
@@ -111,31 +150,40 @@ export default function CreateIssuePopup() {
                   <option value="Done">Done</option>
                 </select>
               </label>
-              <label className={styles.label} htmlFor="assignees">
-                ASSIGNEES
+              <label className={styles.label} htmlFor="assigned to">
+                ASSIGNED TO
                 <select
-                  name="assignees"
+                  name="assigned to"
                   className={styles.field}
                   multiple
-                  value={assignees}
-                  onClick={(e) => {
-                    if (assignees.includes(e.target.value)) {
-                      setAssignees(
-                        assignees.filter((user) => user !== e.target.value)
-                      );
-                    } else {
-                      setAssignees([...assignees, e.target.value]);
-                    }
-                  }}
+                  value={assignedTo}
+                  onChange={() => {}}
                 >
-                  <option value="FName LName">FName LName</option>
-                  <option value="FName1 LName1">FName1 LName1</option>
-                  <option value="FName2 LName2">FName2 LName2</option>
+                  {Object.values(users).map((user) => (
+                    <option
+                      key={user.id}
+                      value={user.id}
+                      onClick={(e) => {
+                        if (assignedTo.includes(e.target.value)) {
+                          setAssignedTo(
+                            assignedTo.filter(
+                              (assignedToUser) =>
+                                assignedToUser !== e.target.value
+                            )
+                          );
+                        } else {
+                          setAssignedTo([...assignedTo, e.target.value]);
+                        }
+                      }}
+                    >{`${user.firstName} ${user.lastName}`}</option>
+                  ))}
                 </select>
               </label>
               <div className={styles.label}>
                 REPORTER
-                <p className={styles.field}>FName LName</p>
+                <p
+                  className={styles.field}
+                >{`${userInfo.firstName} ${userInfo.lastName}`}</p>
               </div>
             </div>
           </div>
@@ -147,3 +195,11 @@ export default function CreateIssuePopup() {
     </>
   );
 }
+
+CreateIssuePopup.defaultProps = {
+  unmountPopup: () => {},
+};
+
+CreateIssuePopup.propTypes = {
+  unmountPopup: PropTypes.func,
+};

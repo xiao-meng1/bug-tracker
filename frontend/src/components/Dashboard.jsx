@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // import UpdateIssuePopup from './UpdateIssuePopup';
-// import CreateIssuePopup from './CreateIssuePopup';
+import CreateIssuePopup from './CreateIssuePopup';
 import IssueCard from './IssueCard';
 import {
   logoutUser,
@@ -26,6 +26,12 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const [onlyMyIssues, setOnlyMyIssues] = useState(false);
   const [filteredIssues, setFilteredIssues] = useState({});
+  const [createIssuePopupActive, setCreateIssuePopupActive] = useState(false);
+  const issueStatusValues = ['To Do', 'In Progress', 'In Review', 'Done'];
+
+  const toggleCreateIssuePopupActive = () => {
+    setCreateIssuePopupActive(!createIssuePopupActive);
+  };
 
   useEffect(() => {
     dispatch(fetchUsers(userJwt));
@@ -58,7 +64,7 @@ export default function Dashboard() {
             <div className={styles.left_icon_container}>
               <img className={styles.jira_logo} src={jiraLogo} alt="logo" />
             </div>
-            <button type="button">
+            <button type="button" onClick={toggleCreateIssuePopupActive}>
               <div className={styles.left_icon_container}>
                 <img src={addIcon} alt="add icon" />
               </div>
@@ -125,99 +131,41 @@ export default function Dashboard() {
             </button>
           </section>
           <section className={styles.column_container}>
-            <div className={styles.column}>
-              <h3>TO DO 5</h3>
-              {!filteredIssues
-                ? null
-                : Object.values(filteredIssues)
-                    .filter((issue) => issue.status === 'To Do')
-                    .map((issue) => (
-                      <IssueCard
-                        key={issue.id}
-                        summary={issue.summary}
-                        type={issue.type}
-                        assignees={issue.assignedTo.map((user) => ({
-                          id: user.id,
-                          initials: `${users[user.id].firstName.slice(
-                            0,
-                            1
-                          )}${users[user.id].lastName.slice(0, 1)}`,
-                          iconColor: users[user.id].iconColorHex,
-                        }))}
-                      />
-                    ))}
-            </div>
-            <div className={styles.column}>
-              <h3>IN PROGRESS 3</h3>
-              {!filteredIssues
-                ? null
-                : Object.values(filteredIssues)
-                    .filter((issue) => issue.status === 'In Progress')
-                    .map((issue) => (
-                      <IssueCard
-                        key={issue.id}
-                        summary={issue.summary}
-                        type={issue.type}
-                        assignees={issue.assignedTo.map((user) => ({
-                          id: user.id,
-                          initials: `${users[user.id].firstName.slice(
-                            0,
-                            1
-                          )}${users[user.id].lastName.slice(0, 1)}`,
-                          iconColor: users[user.id].iconColorHex,
-                        }))}
-                      />
-                    ))}
-            </div>
-            <div className={styles.column}>
-              <h3>IN REVIEW 1</h3>
-              {!filteredIssues
-                ? null
-                : Object.values(filteredIssues)
-                    .filter((issue) => issue.status === 'In Review')
-                    .map((issue) => (
-                      <IssueCard
-                        key={issue.id}
-                        summary={issue.summary}
-                        type={issue.type}
-                        assignees={issue.assignedTo.map((user) => ({
-                          id: user.id,
-                          initials: `${users[user.id].firstName.slice(
-                            0,
-                            1
-                          )}${users[user.id].lastName.slice(0, 1)}`,
-                          iconColor: users[user.id].iconColorHex,
-                        }))}
-                      />
-                    ))}
-            </div>
-            <div className={styles.column}>
-              <h3>DONE 8</h3>
-              {!filteredIssues
-                ? null
-                : Object.values(filteredIssues)
-                    .filter((issue) => issue.status === 'Done')
-                    .map((issue) => (
-                      <IssueCard
-                        key={issue.id}
-                        summary={issue.summary}
-                        type={issue.type}
-                        assignees={issue.assignedTo.map((user) => ({
-                          id: user.id,
-                          initials: `${users[user.id].firstName.slice(
-                            0,
-                            1
-                          )}${users[user.id].lastName.slice(0, 1)}`,
-                          iconColor: users[user.id].iconColorHex,
-                        }))}
-                      />
-                    ))}
-            </div>
+            {issueStatusValues.map((statusValue) => (
+              <div key={statusValue} className={styles.column}>
+                <h3>{`${statusValue.toUpperCase()} ${
+                  Object.values(filteredIssues).filter(
+                    (issue) => issue.status === statusValue
+                  ).length
+                }`}</h3>
+                {!filteredIssues
+                  ? null
+                  : Object.values(filteredIssues)
+                      .filter((issue) => issue.status === statusValue)
+                      .map((issue) => (
+                        <IssueCard
+                          key={issue.id}
+                          summary={issue.summary}
+                          type={issue.type}
+                          assignees={issue.assignedTo.map((user) => ({
+                            id: user.id,
+                            initials: `${users[user.id].firstName.slice(
+                              0,
+                              1
+                            )}${users[user.id].lastName.slice(0, 1)}`,
+                            iconColor: users[user.id].iconColorHex,
+                          }))}
+                        />
+                      ))}
+              </div>
+            ))}
           </section>
         </main>
       </section>
+      {createIssuePopupActive ? (
+        <CreateIssuePopup unmountPopup={toggleCreateIssuePopupActive} />
+      ) : null}
       {/* <UpdateIssuePopup /> */}
-      {/* <CreateIssuePopup /> */}
     </div>
   );
 }
