@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // import UpdateIssuePopup from './UpdateIssuePopup';
@@ -24,11 +24,31 @@ export default function Dashboard() {
   const issues = useSelector(selectIssues);
   const users = useSelector(selectUsers);
   const dispatch = useDispatch();
+  const [onlyMyIssues, setOnlyMyIssues] = useState(false);
+  const [filteredIssues, setFilteredIssues] = useState({});
 
   useEffect(() => {
     dispatch(fetchUsers(userJwt));
     dispatch(fetchIssues(userJwt));
   }, []);
+
+  useEffect(() => {
+    let newFilteredIssues = {};
+
+    if (onlyMyIssues) {
+      Object.values(issues)
+        .filter((issue) =>
+          issue.assignedTo.some((user) => user.id === userInfo.id)
+        )
+        .forEach((issue) => {
+          newFilteredIssues[issue.id] = issue;
+        });
+    } else {
+      newFilteredIssues = issues;
+    }
+
+    setFilteredIssues(newFilteredIssues);
+  }, [issues, onlyMyIssues]);
 
   return (
     <div className={styles.app}>
@@ -94,14 +114,22 @@ export default function Dashboard() {
                     </div>
                   ))}
             </div>
-            <button type="button">Only My Issues</button>
+            <button
+              type="button"
+              className={onlyMyIssues ? styles.active : null}
+              onClick={() => {
+                setOnlyMyIssues(!onlyMyIssues);
+              }}
+            >
+              Only My Issues
+            </button>
           </section>
           <section className={styles.column_container}>
             <div className={styles.column}>
               <h3>TO DO 5</h3>
-              {!issues
+              {!filteredIssues
                 ? null
-                : Object.values(issues)
+                : Object.values(filteredIssues)
                     .filter((issue) => issue.status === 'To Do')
                     .map((issue) => (
                       <IssueCard
@@ -121,9 +149,9 @@ export default function Dashboard() {
             </div>
             <div className={styles.column}>
               <h3>IN PROGRESS 3</h3>
-              {!issues
+              {!filteredIssues
                 ? null
-                : Object.values(issues)
+                : Object.values(filteredIssues)
                     .filter((issue) => issue.status === 'In Progress')
                     .map((issue) => (
                       <IssueCard
@@ -143,9 +171,9 @@ export default function Dashboard() {
             </div>
             <div className={styles.column}>
               <h3>IN REVIEW 1</h3>
-              {!issues
+              {!filteredIssues
                 ? null
-                : Object.values(issues)
+                : Object.values(filteredIssues)
                     .filter((issue) => issue.status === 'In Review')
                     .map((issue) => (
                       <IssueCard
@@ -165,9 +193,9 @@ export default function Dashboard() {
             </div>
             <div className={styles.column}>
               <h3>DONE 8</h3>
-              {!issues
+              {!filteredIssues
                 ? null
-                : Object.values(issues)
+                : Object.values(filteredIssues)
                     .filter((issue) => issue.status === 'Done')
                     .map((issue) => (
                       <IssueCard

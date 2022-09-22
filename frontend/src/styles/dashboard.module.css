@@ -134,7 +134,8 @@
   font-size: 14px;
 }
 
-.content .filters button:hover {
+.content .filters button:hover,
+.content .filters button.active {
   background-color: lightgray;
 }
 
