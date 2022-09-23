@@ -50,6 +50,20 @@ export default function UpdateIssuePopup(props) {
     unmountPopup();
   };
 
+  const handleDeleteIssueClick = async (e) => {
+    e.preventDefault();
+
+    const uri = `${process.env.REACT_APP_BACKEND_ORIGIN}/issues/${issueId}`;
+    const config = {
+      headers: { Authorization: `Bearer ${userJwt}` },
+    };
+
+    await axios.delete(uri, config);
+    dispatch(fetchUsers(userJwt));
+    dispatch(fetchIssues(userJwt));
+    unmountPopup();
+  };
+
   const renderType = () => {
     switch (type) {
       case 'Story':
@@ -90,7 +104,7 @@ export default function UpdateIssuePopup(props) {
         <div className={styles.header}>
           <div className={styles.left}>{renderType()}</div>
           <div className={styles.right}>
-            <button type="button">
+            <button type="button" onClick={handleDeleteIssueClick}>
               <img src={deleteIcon} alt="delete" />
             </button>
             <button type="button" onClick={unmountPopup}>
