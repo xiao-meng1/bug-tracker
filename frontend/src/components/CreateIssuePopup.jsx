@@ -164,15 +164,18 @@ export default function CreateIssuePopup(props) {
                       key={user.id}
                       value={user.id}
                       onClick={(e) => {
-                        if (assignedTo.includes(e.target.value)) {
+                        if (assignedTo.includes(Number(e.target.value))) {
                           setAssignedTo(
                             assignedTo.filter(
                               (assignedToUser) =>
-                                assignedToUser !== e.target.value
+                                assignedToUser !== Number(e.target.value)
                             )
                           );
                         } else {
-                          setAssignedTo([...assignedTo, e.target.value]);
+                          setAssignedTo([
+                            ...assignedTo,
+                            Number(e.target.value),
+                          ]);
                         }
                       }}
                     >{`${user.firstName} ${user.lastName}`}</option>

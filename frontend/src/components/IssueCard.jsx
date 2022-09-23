@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Story16Icon from '@atlaskit/icon-object/glyph/story/16';
 import Bug16Icon from '@atlaskit/icon-object/glyph/bug/16';
 import Task16Icon from '@atlaskit/icon-object/glyph/task/16';
+
 import styles from '../styles/issueCard.module.css';
 
 function IssueCard(props) {
-  const { summary, type, assignees } = props;
+  const { summary, type, assignees, onClickHandler } = props;
 
   const renderTypeIcon = () => {
     switch (type) {
@@ -23,7 +23,7 @@ function IssueCard(props) {
   };
 
   return (
-    <button type="button" className={styles.card}>
+    <button type="button" className={styles.card} onClick={onClickHandler}>
       <p className={styles.summary}>{summary}</p>
       <div className={styles.bottom}>
         {renderTypeIcon()}
@@ -47,6 +47,7 @@ IssueCard.defaultProps = {
   summary: '',
   type: '',
   assignees: [],
+  onClickHandler: () => {},
 };
 
 IssueCard.propTypes = {
@@ -59,6 +60,7 @@ IssueCard.propTypes = {
       iconColor: PropTypes.string,
     })
   ),
+  onClickHandler: PropTypes.func,
 };
 
 export default IssueCard;

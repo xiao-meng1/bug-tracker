@@ -1,18 +1,54 @@
 import React, { useState } from 'react';
-
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 import Story16Icon from '@atlaskit/icon-object/glyph/story/16';
 import Bug16Icon from '@atlaskit/icon-object/glyph/bug/16';
 import Task16Icon from '@atlaskit/icon-object/glyph/task/16';
+
+import { selectIssues } from '../redux/slices/issuesSlice';
+import { selectUsers } from '../redux/slices/usersSlice';
+import { selectUserJwt } from '../redux/slices/userSlice';
+import fetchUsers from '../redux/thunks/fetchUsers';
+import fetchIssues from '../redux/thunks/fetchIssues';
 import clearIcon from '../assets/images/clear_black_24dp.svg';
 import deleteIcon from '../assets/images/delete_black_24dp.svg';
 import styles from '../styles/updateIssuePopup.module.css';
 
-export default function UpdateIssuePopup() {
-  const [summary, setSummary] = useState('Sample Summary');
-  const [description, setDescription] = useState('Lorum ipsum description');
-  const [status, setStatus] = useState('Done');
-  const [assignees, setAssignees] = useState([]);
-  const [type, setType] = useState('task');
+export default function UpdateIssuePopup(props) {
+  const { unmountPopup, issueId } = props;
+  const issues = useSelector(selectIssues);
+  const users = useSelector(selectUsers);
+  const userJwt = useSelector(selectUserJwt);
+  const [summary, setSummary] = useState(issues[issueId].summary);
+  const [description, setDescription] = useState(issues[issueId].description);
+  const [status, setStatus] = useState(issues[issueId].status);
+  const [assignedTo, setAssignedTo] = useState(
+    issues[issueId].assignedTo.map((user) => user.id)
+  );
+  const [type, setType] = useState(issues[issueId].type);
+  const dispatch = useDispatch();
+
+  const handleUpdateIssueClick = async (e) => {
+    e.preventDefault();
+
+    const uri = `${process.env.REACT_APP_BACKEND_ORIGIN}/issues/${issueId}`;
+    const data = {
+      summary,
+      description,
+      type,
+      status,
+      assignedTo,
+    };
+    const config = {
+      headers: { Authorization: `Bearer ${userJwt}` },
+    };
+
+    await axios.put(uri, data, config);
+    dispatch(fetchUsers(userJwt));
+    dispatch(fetchIssues(userJwt));
+    unmountPopup();
+  };
 
   const renderType = () => {
     switch (type) {
@@ -44,7 +80,12 @@ export default function UpdateIssuePopup() {
 
   return (
     <>
-      <button className={styles.overlay} type="button" aria-label="overlay" />
+      <button
+        className={styles.overlay}
+        type="button"
+        aria-label="overlay"
+        onClick={unmountPopup}
+      />
       <div className={styles.popup}>
         <div className={styles.header}>
           <div className={styles.left}>{renderType()}</div>
@@ -52,12 +93,12 @@ export default function UpdateIssuePopup() {
             <button type="button">
               <img src={deleteIcon} alt="delete" />
             </button>
-            <button type="button">
+            <button type="button" onClick={unmountPopup}>
               <img src={clearIcon} alt="delete" />
             </button>
           </div>
         </div>
-        <form>
+        <form action="" onSubmit={handleUpdateIssueClick}>
           <div className={styles.body}>
             <div className={styles.left}>
               <input
@@ -115,31 +156,43 @@ export default function UpdateIssuePopup() {
                   <option value="Done">Done</option>
                 </select>
               </label>
-              <label className={styles.label} htmlFor="assignees">
-                ASSIGNEES
+              <label className={styles.label} htmlFor="assigned to">
+                ASSIGNED TO
                 <select
-                  name="assignees"
+                  name="assigned to"
                   className={styles.field}
                   multiple
-                  value={assignees}
-                  onClick={(e) => {
-                    if (assignees.includes(e.target.value)) {
-                      setAssignees(
-                        assignees.filter((user) => user !== e.target.value)
-                      );
-                    } else {
-                      setAssignees([...assignees, e.target.value]);
-                    }
-                  }}
+                  value={assignedTo}
+                  onChange={() => {}}
                 >
-                  <option value="FName LName">FName LName</option>
-                  <option value="FName1 LName1">FName1 LName1</option>
-                  <option value="FName2 LName2">FName2 LName2</option>
+                  {Object.values(users).map((user) => (
+                    <option
+                      key={user.id}
+                      value={user.id}
+                      onClick={(e) => {
+                        if (assignedTo.includes(Number(e.target.value))) {
+                          setAssignedTo(
+                            assignedTo.filter(
+                              (assignedToUser) =>
+                                assignedToUser !== Number(e.target.value)
+                            )
+                          );
+                        } else {
+                          setAssignedTo([
+                            ...assignedTo,
+                            Number(e.target.value),
+                          ]);
+                        }
+                      }}
+                    >{`${user.firstName} ${user.lastName}`}</option>
+                  ))}
                 </select>
               </label>
               <div className={styles.label}>
                 REPORTER
-                <p className={styles.field}>FName LName</p>
+                <p className={styles.field}>{`${
+                  users[issues[issueId].reportedById].firstName
+                } ${users[issues[issueId].reportedById].lastName}`}</p>
               </div>
             </div>
           </div>
@@ -151,3 +204,13 @@ export default function UpdateIssuePopup() {
     </>
   );
 }
+
+UpdateIssuePopup.defaultProps = {
+  unmountPopup: () => {},
+  issueId: null,
+};
+
+UpdateIssuePopup.propTypes = {
+  unmountPopup: PropTypes.func,
+  issueId: PropTypes.number,
+};

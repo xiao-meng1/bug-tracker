@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-// import UpdateIssuePopup from './UpdateIssuePopup';
+import UpdateIssuePopup from './UpdateIssuePopup';
 import CreateIssuePopup from './CreateIssuePopup';
 import IssueCard from './IssueCard';
 import {
@@ -26,11 +26,19 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const [onlyMyIssues, setOnlyMyIssues] = useState(false);
   const [filteredIssues, setFilteredIssues] = useState({});
-  const [createIssuePopupActive, setCreateIssuePopupActive] = useState(false);
+  const [createIssuePopupIsActive, setCreateIssuePopupIsActive] =
+    useState(false);
+  const [updateIssuePopupIsActive, setUpdateIssuePopupIsActive] =
+    useState(false);
+  const [activeIssueId, setActiveIssueId] = useState(null);
   const issueStatusValues = ['To Do', 'In Progress', 'In Review', 'Done'];
 
-  const toggleCreateIssuePopupActive = () => {
-    setCreateIssuePopupActive(!createIssuePopupActive);
+  const toggleCreateIssuePopupIsActive = () => {
+    setCreateIssuePopupIsActive(!createIssuePopupIsActive);
+  };
+
+  const toggleUpdateIssuePopupIsActive = () => {
+    setUpdateIssuePopupIsActive(!updateIssuePopupIsActive);
   };
 
   useEffect(() => {
@@ -64,7 +72,7 @@ export default function Dashboard() {
             <div className={styles.left_icon_container}>
               <img className={styles.jira_logo} src={jiraLogo} alt="logo" />
             </div>
-            <button type="button" onClick={toggleCreateIssuePopupActive}>
+            <button type="button" onClick={toggleCreateIssuePopupIsActive}>
               <div className={styles.left_icon_container}>
                 <img src={addIcon} alt="add icon" />
               </div>
@@ -155,6 +163,10 @@ export default function Dashboard() {
                             )}${users[user.id].lastName.slice(0, 1)}`,
                             iconColor: users[user.id].iconColorHex,
                           }))}
+                          onClickHandler={() => {
+                            setActiveIssueId(issue.id);
+                            toggleUpdateIssuePopupIsActive();
+                          }}
                         />
                       ))}
               </div>
@@ -162,10 +174,15 @@ export default function Dashboard() {
           </section>
         </main>
       </section>
-      {createIssuePopupActive ? (
-        <CreateIssuePopup unmountPopup={toggleCreateIssuePopupActive} />
+      {createIssuePopupIsActive ? (
+        <CreateIssuePopup unmountPopup={toggleCreateIssuePopupIsActive} />
       ) : null}
-      {/* <UpdateIssuePopup /> */}
+      {updateIssuePopupIsActive ? (
+        <UpdateIssuePopup
+          unmountPopup={toggleUpdateIssuePopupIsActive}
+          issueId={activeIssueId}
+        />
+      ) : null}
     </div>
   );
 }
