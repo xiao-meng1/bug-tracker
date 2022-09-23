@@ -141,7 +141,7 @@ export default function SignUp() {
                     setLastName(e.target.value);
                   }}
                   type="text"
-                  placeholder="Enter LastName"
+                  placeholder="Enter Last Name"
                   pattern="[a-zA-Z0-9]+"
                   title="Must only contain letters"
                   required
