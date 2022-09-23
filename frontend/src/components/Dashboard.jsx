@@ -9,8 +9,8 @@ import {
   selectUserInfo,
   selectUserJwt,
 } from '../redux/slices/userSlice';
-import { selectIssues } from '../redux/slices/issuesSlice';
-import { selectUsers } from '../redux/slices/usersSlice';
+import { selectIssues, clearIssues } from '../redux/slices/issuesSlice';
+import { selectUsers, clearUsers } from '../redux/slices/usersSlice';
 import fetchIssues from '../redux/thunks/fetchIssues';
 import fetchUsers from '../redux/thunks/fetchUsers';
 import jiraLogo from '../assets/images/mark-gradient-white-jira-software.svg';
@@ -39,6 +39,12 @@ export default function Dashboard() {
 
   const toggleUpdateIssuePopupIsActive = () => {
     setUpdateIssuePopupIsActive(!updateIssuePopupIsActive);
+  };
+
+  const handleLogoutClick = () => {
+    dispatch(logoutUser());
+    dispatch(clearIssues());
+    dispatch(clearUsers());
   };
 
   useEffect(() => {
@@ -91,12 +97,7 @@ export default function Dashboard() {
                 )}`}
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => {
-                dispatch(logoutUser());
-              }}
-            >
+            <button type="button" onClick={handleLogoutClick}>
               <div className={styles.left_icon_container}>
                 <img src={logoutIcon} alt="logout icon" />
               </div>

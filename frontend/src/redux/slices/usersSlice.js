@@ -9,7 +9,12 @@ export const usersSlice = createSlice({
     errors: [],
     isIdle: true,
   },
-  reducers: {},
+  reducers: {
+    clearUsers: (state) => {
+      state.entities = {};
+      state.errors = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -29,6 +34,8 @@ export const usersSlice = createSlice({
       });
   },
 });
+
+export const { clearUsers } = usersSlice.actions;
 
 export const selectUsers = (state) => state.users.entities;
 export const selectUsersErrors = (state) => state.users.errors;

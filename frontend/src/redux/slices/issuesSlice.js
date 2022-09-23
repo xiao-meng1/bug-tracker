@@ -9,7 +9,12 @@ export const issuesSlice = createSlice({
     errors: [],
     isIdle: true,
   },
-  reducers: {},
+  reducers: {
+    clearIssues: (state) => {
+      state.entities = {};
+      state.errors = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchIssues.pending, (state) => {
@@ -29,6 +34,8 @@ export const issuesSlice = createSlice({
       });
   },
 });
+
+export const { clearIssues } = issuesSlice.actions;
 
 export const selectIssues = (state) => state.issues.entities;
 export const selectIssuesErrors = (state) => state.issues.errors;
