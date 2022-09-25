@@ -1,3 +1,5 @@
+# syntax = docker/dockerfile:1.2
+
 FROM node:18
 
 WORKDIR /app
@@ -8,6 +10,8 @@ COPY prisma ./prisma
 RUN npm install
 
 COPY . .
+
+RUN  --mount=type=secret,id=DATABASE_URI,dst=/etc/secrets/DATABASE_URI
 
 RUN npm i -g prisma
 RUN npx prisma migrate deploy
