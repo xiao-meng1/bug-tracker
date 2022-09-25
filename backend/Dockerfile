@@ -2,6 +2,8 @@
 
 FROM node:18
 
+RUN  --mount=type=secret,id=DB,dst=/etc/secrets/DB
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -10,8 +12,6 @@ COPY prisma ./prisma
 RUN npm install
 
 COPY . .
-
-RUN  --mount=type=secret,id=DB,dst=/etc/secrets/DB
 
 RUN npm i -g prisma
 RUN npx prisma migrate deploy
