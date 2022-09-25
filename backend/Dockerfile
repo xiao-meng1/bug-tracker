@@ -10,7 +10,7 @@ RUN npm install
 COPY . .
 
 RUN npm i -g prisma
-RUN prisma migrate deploy
+RUN npx prisma migrate deploy
 
 ENV PORT=5000
 EXPOSE 5000
