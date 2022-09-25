@@ -9,8 +9,6 @@ RUN npm install
 
 COPY . .
 
-RUN --mount=type=secret,DATABASE_URL=DATABASE_URL
-
 RUN npm i -g prisma
 RUN npx prisma migrate deploy
 
