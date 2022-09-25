@@ -12,6 +12,7 @@ require('./config/passport');
 const userRouter = require('./routes/userRouter');
 const issueRouter = require('./routes/issueRouter');
 const sessionRouter = require('./routes/sessionRouter');
+const apiRouter = require('./routes/apiRouter');
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(
   passport.authenticate('jwt', { session: false }),
   issueRouter
 );
+app.use('/api', apiRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));
