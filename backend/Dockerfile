@@ -3,13 +3,16 @@ FROM node:18
 WORKDIR /app
 
 COPY package*.json ./
+COPY prisma ./prisma
 
 RUN npm install
 
 COPY . .
 
-ENV PORT=5500
+RUN npm i -g prisma
+RUN prisma generate
 
-EXPOSE 5500
+ENV PORT=5000
+EXPOSE 5000
 
 CMD [ "npm", "start" ]
